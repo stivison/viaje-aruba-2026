@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Viaje: Aruba 2026</title>
+    <!-- Tailwind CSS -->
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <!-- React y Babel para procesar JSX en el navegador -->
+    <script src="[https://unpkg.com/react@18/umd/react.production.min.js](https://unpkg.com/react@18/umd/react.production.min.js)"></script>
+    <script src="[https://unpkg.com/react-dom@18/umd/react-dom.production.min.js](https://unpkg.com/react-dom@18/umd/react-dom.production.min.js)"></script>
+    <script src="[https://unpkg.com/@babel/standalone/babel.min.js](https://unpkg.com/@babel/standalone/babel.min.js)"></script>
+    <!-- Lucide Icons -->
+    <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
+    <style>
+        @import url('[https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap)');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Importamos los iconos de Lucide disponibles globalmente
+        const { 
+            Plane, Car, Home, MapPin, Utensils, Wallet, Calendar, 
+            Info, CheckCircle, Clock, Waves, Camera, ShoppingBag, Star 
+        } = lucide;
+
+        // Aquí va tu componente App (adaptado ligeramente para el navegador)
+        const App = () => {
+            const [activeTab, setActiveTab] = React.useState('itinerario');
+            const [selectedHotel, setSelectedHotel] = React.useState(0);
+            const [foodStyle, setFoodStyle] = React.useState(1);
+            const [timeLeft, setTimeLeft] = React.useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+            const hotels = [
+                { name: "Aruba Harmony Apartments", price: 1698172, type: "Económico / Familiar", features: ["Cocina completa", "Piscina privada", "Tranquilo"], description: "Ideal para cocinar y reducir gastos extras." },
+                { name: "Wonders Boutique Hotel", price: 2250000, type: "Boutique / Adultos", features: ["Piscina central", "Refinado", "Cerca de Oranjestad"], description: "Ambiente íntimo, perfecto para parejas." },
+                { name: "Karibu Aruba", price: 2890000, type: "Apart-Hotel / Prime", features: ["Cerca de Palm Beach", "Lujo moderno", "Parqueo"], description: "Excelente ubicación cerca de la zona de lujo." },
+                { name: "Eagle Aruba Resort", price: 3450000, type: "Resort Completo", features: ["Piscinas", "Casino y Gym", "Cerca de Eagle Beach"], description: "Experiencia de resort total con todas las comodidades." }
+            ];
+
+            const foodOptions = [
+                { name: "Ahorro (Supermercado)", dailyPerPerson: 80000, desc: "Desayunos y cenas en casa." },
+                { name: "Balanceado (Mix)", dailyPerPerson: 150000, desc: "Desayuno en casa, cena afuera." },
+                { name: "Explorador Gastronómico", dailyPerPerson: 250000, desc: "Restaurantes premium diario." }
+            ];
+
+            const baseCosts = { vuelos: 2983860, carro: 1200000, otros: 400000 };
+            const totalFood = foodOptions[foodStyle].dailyPerPerson * 4 * 6;
+            const totalBudget = baseCosts.vuelos + baseCosts.carro + baseCosts.otros + hotels[selectedHotel].price + totalFood;
+
+            React.useEffect(() => {
+                const targetDate = new Date('2026-03-06T00:00:00');
+                const timer = setInterval(() => {
+                    const now = new Date();
+                    const diff = targetDate - now;
+                    if (diff < 0) return clearInterval(timer);
+                    setTimeLeft({
+                        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+                        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+                        minutes: Math.floor((diff / 1000 / 60) % 60),
+                        seconds: Math.floor((diff / 1000) % 60)
+                    });
+                }, 1000);
+                return () => clearInterval(timer);
+            }, []);
+
+            const itinerary = [
+                { day: 1, title: "Llegada y Atardecer", icon: <Plane className="w-5 h-5" />, activity: "Recogida de carro y relax en Eagle Beach.", food: "Cena en 'The West Deck'." },
+                { day: 2, title: "Norte y Snorkel", icon: <Waves className="w-5 h-5" />, activity: "Faro California y snorkel en Arashi Beach.", food: "Cena en 'Papiamento'." },
+                { day: 3, title: "Aventura Arikok", icon: <MapPin className="w-5 h-5" />, activity: "Cuevas y Conchi (Natural Pool).", food: "Cena en 'Zeerovers'." },
+                { day: 4, title: "Sur y Arte", icon: <Camera className="w-5 h-5" />, activity: "Baby Beach y murales en San Nicolás.", food: "Cena en 'Kamini’s Kitchen'." },
+                { day: 5, title: "Compras y Lujo", icon: <ShoppingBag className="w-5 h-5" />, activity: "Oranjestad y tarde en Palm Beach.", food: "Cena en 'Barefoot Restaurant'." },
+                { day: 6, title: "Regreso", icon: <Clock className="w-5 h-5" />, activity: "Últimas compras y aeropuerto.", food: "Snack rápido." }
+            ];
+
+            // Renderizado (Simplificado para el ejemplo)
+            return (
+                <div className="min-h-screen bg-slate-50 pb-20">
+                    <div className="bg-slate-900 text-white p-12 text-center relative overflow-hidden">
+                        <div className="relative z-10">
+                            <h1 className="text-4xl font-black uppercase tracking-tighter mb-2">Aruba 2026</h1>
+                            <p className="text-cyan-400 font-bold mb-4">6 - 11 de Marzo</p>
+                            <div className="flex justify-center gap-4 text-center">
+                                <div><div className="text-2xl font-bold">{timeLeft.days}</div><div className="text-[10px] uppercase opacity-50">Días</div></div>
+                                <div><div className="text-2xl font-bold">{timeLeft.hours}</div><div className="text-[10px] uppercase opacity-50">Hrs</div></div>
+                                <div><div className="text-2xl font-bold">{timeLeft.minutes}</div><div className="text-[10px] uppercase opacity-50">Min</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="max-w-4xl mx-auto px-4 -mt-6">
+                        <div className="bg-white p-2 rounded-2xl shadow-xl flex gap-1 mb-8 sticky top-4 z-50">
+                            <button onClick={() => setActiveTab('itinerario')} className={`flex-1 py-3 rounded-xl font-bold ${activeTab === 'itinerario' ? 'bg-cyan-500 text-white' : 'text-slate-400'}`}>Itinerario</button>
+                            <button onClick={() => setActiveTab('presupuesto')} className={`flex-1 py-3 rounded-xl font-bold ${activeTab === 'presupuesto' ? 'bg-cyan-500 text-white' : 'text-slate-400'}`}>Presupuesto</button>
+                        </div>
+
+                        {activeTab === 'itinerario' ? (
+                            <div className="grid gap-4">
+                                {itinerary.map(day => (
+                                    <div key={day.day} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex gap-4">
+                                        <div className="bg-cyan-100 text-cyan-600 p-3 h-fit rounded-2xl">{day.icon}</div>
+                                        <div>
+                                            <div className="text-xs font-bold text-cyan-500">DÍA 0{day.day}</div>
+                                            <h3 className="font-black text-lg">{day.title}</h3>
+                                            <p className="text-sm text-slate-500 mt-1">{day.activity}</p>
+                                            <p className="text-sm font-bold text-slate-800 mt-2">🍴 {day.food}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="space-y-6">
+                                <div className="bg-slate-900 text-white p-8 rounded-[40px] text-center shadow-xl">
+                                    <div className="text-xs font-bold opacity-50 mb-1">TOTAL ESTIMADO (4 PERSONAS)</div>
+                                    <div className="text-4xl font-black">${totalBudget.toLocaleString('es-CO')} COP</div>
+                                    <div className="mt-2 text-cyan-400 font-bold">${(totalBudget/4).toLocaleString('es-CO')} p/p</div>
+                                </div>
+                                <div className="bg-white p-6 rounded-3xl border border-slate-100 space-y-3">
+                                    <p className="flex justify-between text-sm"><span>Vuelos</span> <b>$2.983.860</b></p>
+                                    <p className="flex justify-between text-sm text-green-600"><span>Hospedaje ({hotels[selectedHotel].name})</span> <b>${hotels[selectedHotel].price.toLocaleString('es-CO')}</b></p>
+                                    <p className="flex justify-between text-sm text-orange-600"><span>Comida (Estilo {foodStyle + 1})</span> <b>${totalFood.toLocaleString('es-CO')}</b></p>
+                                    <p className="flex justify-between text-sm"><span>Carro + Gasolina</span> <b>$1.200.000</b></p>
+                                </div>
+                                <p className="text-center text-[10px] text-slate-400 uppercase font-bold tracking-widest">Abre en ajustes para cambiar hotel o comida</p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
